@@ -1,1 +1,49 @@
-<p>dashboard works!</p>
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>PayFlow</h1>
+    <div class="header-right">
+      <span>{{ userName }}</span>
+      <button class="btn-logout" (click)="logout()">Sair</button>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <div class="plans-header">
+      <h2>Escolha seu plano</h2>
+      <p>Comece gratuitamente e evolua conforme sua necessidade</p>
+    </div>
+
+    <div class="plans-grid">
+      @for (plan of plans; track plan.id) {
+        <div class="plan-card" [class.popular]="plan.id === 'pro'">
+          @if (plan.id === 'pro') {
+            <span class="badge">Mais popular</span>
+          }
+          <h3>{{ plan.name }}</h3>
+          <p class="plan-description">{{ plan.description }}</p>
+          <div class="plan-price">
+            @if (plan.price === 0) {
+              <span class="price">Grátis</span>
+            } @else {
+              <span class="price">R$ {{ plan.price }}</span>
+              <span class="period">/mês</span>
+            }
+          </div>
+          <ul class="features-list">
+            @for (feature of plan.features; track feature) {
+              <li>✓ {{ feature }}</li>
+            }
+          </ul>
+          <button
+            class="btn-plan"
+            [class.btn-primary]="plan.id === 'pro'"
+            [class.btn-secondary]="plan.id !== 'pro'"
+            (click)="selectPlan(plan.id)"
+          >
+            {{ plan.id === userPlan ? 'Plano atual' : 'Escolher plano' }}
+          </button>
+        </div>
+      }
+    </div>
+  </main>
+</div>
