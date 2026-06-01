@@ -4,15 +4,30 @@
       <h1>PayFlow</h1>
       <p>Gerencie suas assinaturas com inteligência</p>
     </div>
-    <form class="login-form">
+    <form class="login-form" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label for="email">E-mail</label>
-        <input type="email" id="email" placeholder="seu@email.com" />
+        <input
+          type="email"
+          id="email"
+          placeholder="seu@email.com"
+          [(ngModel)]="email"
+          name="email"
+        />
       </div>
       <div class="form-group">
         <label for="password">Senha</label>
-        <input type="password" id="password" placeholder="••••••••" />
+        <input
+          type="password"
+          id="password"
+          placeholder="••••••••"
+          [(ngModel)]="password"
+          name="password"
+        />
       </div>
+     @if (errorMessage) {
+  <p class="error-message">{{ errorMessage }}</p>
+}
       <button type="submit" class="btn-primary">Entrar</button>
     </form>
     <p class="register-link">
