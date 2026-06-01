@@ -16,4 +16,10 @@ export class AuthService {
   login(email: string, password: string) {
     return this.http.post(`${this.apiUrl}/login`, { email, password })
   }
+  createCheckout(planId: string, userId: string) {
+  return this.http.post<{ url: string }>(
+    'http://localhost:3000/api/stripe/create-checkout',
+    { planId, userId }
+  )
+}
 }

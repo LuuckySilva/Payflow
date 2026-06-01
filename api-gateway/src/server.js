@@ -1,16 +1,19 @@
 const express = require('express')
 const cors = require('cors')
 const dotenv = require('dotenv')
-const { connectMongo } = require('./config/database')
-const authRoutes = require('./routes/authRoutes')
 
 dotenv.config()
+
+const { connectMongo } = require('./config/database')
+const authRoutes = require('./routes/authRoutes')
+const stripeRoutes = require('./routes/stripeRoutes')
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
 app.use('/api/auth', authRoutes)
+app.use('/api/stripe', stripeRoutes)
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'api-gateway' })

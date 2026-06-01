@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
+import { AuthService } from '../../services/auth'
 
 @Component({
   selector: 'app-dashboard',
@@ -36,7 +37,7 @@ export class Dashboard implements OnInit {
     }
   ]
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit() {
     const token = localStorage.getItem('token')
@@ -54,8 +55,20 @@ export class Dashboard implements OnInit {
     this.router.navigate(['/login'])
   }
 
-  selectPlan(planId: string) {
-    console.log('Plano selecionado:', planId)
-  }
+selectPlan(planId: string) {
+  if (planId === 'free' || planId === this.userPlan) return
 
+  const token = localStorage.getItem('token')
+  const payload = JSON.parse(atob(token!.split('.')[1]))
+  const userId = payload.id
+
+  this.authService.createCheckout(planId, userId).subscribe({
+    next: (response) => {
+      window.location.href = response.url
+    },
+    error: (error) => {
+      console.error('Erro ao criar checkout:', error)
+    }
+  })
+}
 }
