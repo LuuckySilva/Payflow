@@ -1,0 +1,54 @@
+name: PayFlow CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-node:
+    name: Testa API Gateway (Node.js)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instala dependências
+        working-directory: api-gateway
+        run: npm install
+
+      - name: Roda testes
+        working-directory: api-gateway
+        run: npm test
+
+  test-dotnet:
+    name: Testa Payment Service (C#)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restaura dependências
+        working-directory: payment-service/PaymentService
+        run: dotnet restore
+
+      - name: Compila
+        working-directory: payment-service/PaymentService
+        run: dotnet build --no-restore
+
+      - name: Roda testes
+        working-directory: payment-service/PaymentService
+        run: dotnet test --no-build
