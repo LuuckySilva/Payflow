@@ -1,4 +1,6 @@
 {
+  "buildCommand": "ng build",
+  "outputDirectory": "dist/payflow-frontend/browser",
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
   ]
